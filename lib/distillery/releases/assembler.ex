@@ -34,7 +34,7 @@ defmodule Distillery.Releases.Assembler do
 
   @doc """
   This function takes a Config struct and assembles the release.
-
+  
   **Note: This operation has side-effects!** It creates files, directories,
   copies files from other filesystem locations. If failures occur, no cleanup
   of files/directories is performed. However, all files/directories created by
@@ -860,7 +860,8 @@ defmodule Distillery.Releases.Assembler do
     # no work around for this
     old_cwd = File.cwd!()
     File.cd!(output_dir)
-    :ok = :release_handler.create_RELEASES('./', 'releases', '#{relfile}', [])
+    IO.inspect("#{relfile}")
+    :ok = :release_handler.create_RELEASES('./', 'releases', '#{relfile}', []) |> IO.inspect()
     File.cd!(old_cwd)
     :ok
   end
@@ -992,6 +993,7 @@ defmodule Distillery.Releases.Assembler do
             "    this setting will prevent you from doing so without a rolling restart.\n" <>
             "    You may ignore this warning if you have no plans to use hot upgrades."
         )
+
         Shell.debug("Stripping release (#{path})")
 
         case :beam_lib.strip_release(String.to_charlist(path)) do
